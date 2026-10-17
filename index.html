@@ -1,67 +1,498 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zero to Tech · 个人主页</title>
-    <link rel="stylesheet" href="css/reset.css" />
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/hero.css" />
-    <link rel="stylesheet" href="css/nav.css" />
-    <link rel="stylesheet" href="css/cards.css" />
-    <link rel="stylesheet" href="css/lab.css" />
-    <link rel="stylesheet" href="css/responsive.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <div class="page-shell">
-        <main class="page-content">
-          <section class="dashboard-grid">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <!-- ↓↓↓ 顶部 hero：品牌 + 导航 + 大标题 + 副标题 ↓↓↓ -->
-            <!-- 这一整块在 text-lab.html 里几乎一字不差地又抄了一遍 -->
-            <article class="hero-stage panel-full">
-              <div class="hero-topline">
-                <p class="brand-eyebrow">zero to tech</p>
-                <nav class="inline-links hero-nav">
-                  <a class="nav-link" href="index.html">个人主页</a>
-                  <a class="nav-link" href="text-lab.html">文字实验室</a>
-                </nav>
-              </div>
-              <div class="hero-copy">
-                <h1 class="hero-display">关于我</h1>
-                <p class="hero-subtitle">项目，创意，灵感，心得，我的作品</p>
-              </div>
-            </article>
-            <!-- ↑↑↑ hero 结束 ↑↑↑ -->
+  <title>替它听 · 宠物智能听诊器市场研究</title>
+  <meta name="description" content="“它”不会说，我们替它听。一款面向家庭场景的宠物心肺初筛工具，以及它背后的 1,440 份计划样本市场调查。">
+  <meta name="theme-color" content="#0A1714">
 
-            <article class="panel panel-full featured-work-panel card">
-              <p class="section-kicker">作品</p>
-              <p class="featured-title">文字实验室</p>
-              <p class="featured-copy">拼音和情绪，挖掘中文里的细节</p>
-              <a class="featured-link" href="text-lab.html">
-                <span class="featured-link-label">打开作品</span>
-                <span class="arrow">›</span>
-              </a>
-            </article>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="替它听 · 宠物智能听诊器市场研究">
+  <meta property="og:description" content="它不会说，我们替它听。一款面向家庭场景的宠物心肺初筛工具，以及它背后的市场调查。">
+  <meta property="og:locale" content="zh_CN">
 
-            <article class="panel panel-full identity-panel card">
-              <div class="identity-item">
-                <p class="section-kicker">座右铭</p>
-                <p class="identity-value identity-quote">已识乾坤大，尤怜草木青</p>
-              </div>
-              <div class="identity-item">
-                <p class="section-kicker">正在学习</p>
-                <p class="identity-value">零到全栈</p>
-              </div>
-            </article>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AB%80%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
 
-          </section>
-        </main>
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+<!-- ================= HERO ================= -->
+<header class="hero dark">
+  <div class="wrap">
+    <div class="eyebrow">正大杯 · 全国大学生市场调查与分析大赛</div>
+
+    <h1 style="margin-top: 30px;">它不会说，<em>我们替它听。</em></h1>
+
+    <p class="hero-sub">
+      一款面向家庭场景的宠物心肺初筛工具。它不替代兽医诊断，
+      只回答一个具体问题——<strong>现在，要不要去医院。</strong>
+    </p>
+
+    <div class="hero-meta">
+      <span><b>1,440</b> 计划发放</span>
+      <span><b>1,260</b> 目标有效</span>
+      <span><b>420</b> 当前分析样本</span>
+      <span><b>5</b> 类客群</span>
+      <span><b>3</b> 个价格点</span>
+    </div>
+
+    <div class="trace-stage" aria-hidden="true">
+      <canvas id="pcg"></canvas>
+    </div>
+
+    <div class="trace-bar">
+      <span class="trace-label">Phonocardiogram · 心音图 · 约 73 bpm</span>
+      <button class="play" id="playBtn" type="button">
+        <span class="dot"></span><span id="playTxt">播放心音</span>
+      </button>
+    </div>
+  </div>
+
+</header>
+
+<!-- ================= STATS ================= -->
+<section class="band dark">
+  <div class="wrap">
+    <p class="lede rv" style="margin-bottom: 0;">
+      心肺问题的信号，通常在宠物家里出现。而能确认它的检查手段，
+      几乎全部集中在医院。这中间隔着一段时间——<strong>它决定了是及时干预，还是错过窗口。</strong>
+    </p>
+
+    <div class="stats">
+      <div class="stat rv">
+        <div class="n">49.0<small>%</small></div>
+        <p>的受访者<strong>曾遇到</strong>宠物持续咳嗽、夜间气促、活动耐力下降等心肺相关表现</p>
+      </div>
+      <div class="stat rv">
+        <div class="n">33.6<small>%</small></div>
+        <p>的就诊经历中，医生<strong>每次都会</strong>使用听诊器完成心肺检查</p>
+      </div>
+      <div class="stat rv">
+        <div class="n">4.19<small>/5</small></div>
+        <p>痛点最高分，不是技术焦虑，而是<strong>"担心就医费用不透明"</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BREAKS ================= -->
+<section class="band light on-light">
+  <div class="wrap">
+    <div class="eyebrow on-light rv">01 · 问题</div>
+    <h2 class="rv" style="margin-top: 26px;">一次听诊，<br>被三个断点切开。</h2>
+    <p class="lede rv" style="margin-top: 24px;">
+      听诊是兽医心肺评估中最基础、也最廉价的一环。但在宠物场景里，
+      它并不连续——声音来了一下，就走了。
+    </p>
+
+    <div class="breaks">
+      <div class="break-item rv">
+        <div class="idx">01</div>
+        <h3>留存断点</h3>
+        <p>机械听诊器的声音只到达医生耳朵，不产生任何可留存、可对比的数据。一次听诊与下一次之间，建立不了客观基线。</p>
+      </div>
+      <div class="break-item rv">
+        <div class="idx">02</div>
+        <h3>场景断点</h3>
+        <p>宠主察觉异状的瞬间在家里，现场没有工具；等到就诊时，症状往往已经消失，只能靠回忆转述。</p>
+      </div>
+      <div class="break-item rv">
+        <div class="idx">03</div>
+        <h3>解释断点</h3>
+        <p>心音是专业判读对象。即使录下来，宠主也很难理解它意味着什么，更难判断该不该就医。</p>
       </div>
     </div>
 
-    <script type="module" src="js/main.js"></script>
-  </body>
+    <p class="lede rv" style="margin-top: clamp(30px, 4vw, 48px);">
+      把听诊数字化，是弥合这三重断点的直接思路。<strong>但先要回答一个更前置的问题：宠主愿不愿意为它付钱，又愿意付多少。</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ================= METHOD ================= -->
+<section class="band dark">
+  <div class="wrap">
+    <div class="eyebrow rv">02 · 调查</div>
+    <h2 class="rv" style="margin-top: 26px;">1,440 份计划样本，<br>一条从需求到定价的证据链。</h2>
+    <p class="lede rv" style="margin-top: 24px;">
+      按 ±3.5% 精度测算，正式调查计划发放 1,440 份、目标有效 1,260 份；当前已完成第一阶段 420 份有效样本。
+      问卷七个部分、42 个题项。不堆方法，每一步只回答一个具体问题：
+      需求真不真、功能怎么排、价格在哪、人群是谁。
+    </p>
+
+    <div class="method-grid">
+      <div class="chain rv">
+        <div class="chain-row"><span class="step">01</span><span class="nm">描述性统计</span><span class="fn">需求真不真</span></div>
+        <div class="chain-row"><span class="step">02</span><span class="nm">Kano 双题＋Better-Worse</span><span class="fn">功能怎么排</span></div>
+        <div class="chain-row"><span class="step">03</span><span class="nm">PSM 价格敏感度</span><span class="fn">价格在哪</span></div>
+        <div class="chain-row"><span class="step">04</span><span class="nm">有序 Logistic 回归</span><span class="fn">意愿从哪来</span></div>
+        <div class="chain-row"><span class="step">05</span><span class="nm">K-means 聚类</span><span class="fn">先找谁</span></div>
+      </div>
+
+      <div class="quality-card rv">
+        <h4>Data quality · 数据质量</h4>
+        <div class="qrow"><span>痛点量表 Cronbach's α</span><b>0.733</b></div>
+        <div class="qrow"><span>价值量表 Cronbach's α</span><b>0.884</b></div>
+        <div class="qrow"><span>KMO 取样适切性</span><b>0.897</b></div>
+        <div class="qrow"><span>Bartlett 球形检验</span><b>p &lt; 0.001</b></div>
+        <div class="qrow"><span>平行线检验（有序 Logit 前提）</span><b>p = 0.366</b></div>
+        <div class="qrow"><span>回归模型伪 R²</span><b>0.508</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KANO ================= -->
+<section class="band light on-light">
+  <div class="wrap">
+    <div class="eyebrow on-light rv">03 · 发现</div>
+    <h2 class="rv" style="margin-top: 26px;">功能不是越多越好，<br>是越准越好。</h2>
+    <p class="lede rv" style="margin-top: 24px;">
+      Kano 双题给出需求的属性分类，Better-Worse 系数给出优先级。
+      两者叠加，才能回答"哪项该做扎实、哪项该做亮点"。
+    </p>
+
+    <div class="kano-layout">
+      <figure class="kano-figure rv">
+        <svg viewBox="0 0 720 600" role="img" aria-label="Kano Better-Worse 四象限图">
+          <!-- quadrant fills -->
+          <rect x="80" y="40" width="312.8" height="177.1" fill="#E9F0E7"/>
+          <rect x="392.8" y="40" width="297.2" height="177.1" fill="#F7EEDA"/>
+          <rect x="80" y="217.1" width="312.8" height="302.9" fill="#EEEDE5"/>
+          <rect x="392.8" y="217.1" width="297.2" height="302.9" fill="#F4E3E2"/>
+
+          <!-- dividers -->
+          <line x1="392.8" y1="40" x2="392.8" y2="520" stroke="#B5AE9C" stroke-width="1.2" stroke-dasharray="6 5"/>
+          <line x1="80" y1="217.1" x2="690" y2="217.1" stroke="#B5AE9C" stroke-width="1.2" stroke-dasharray="6 5"/>
+
+          <!-- axes -->
+          <line x1="80" y1="520" x2="690" y2="520" stroke="#8C8779" stroke-width="1.4"/>
+          <line x1="80" y1="40" x2="80" y2="520" stroke="#8C8779" stroke-width="1.4"/>
+
+          <!-- x ticks -->
+          <g font-family="ui-monospace, Menlo, monospace" font-size="12" fill="#9C9789" text-anchor="middle">
+            <text x="80" y="542">0</text><text x="167.1" y="542">10</text><text x="254.3" y="542">20</text>
+            <text x="341.4" y="542">30</text><text x="428.6" y="542">40</text><text x="515.7" y="542">50</text>
+            <text x="602.9" y="542">60</text><text x="690" y="542">70</text>
+          </g>
+          <!-- y ticks -->
+          <g font-family="ui-monospace, Menlo, monospace" font-size="12" fill="#9C9789" text-anchor="end">
+            <text x="68" y="524">0</text><text x="68" y="422">20</text><text x="68" y="321">40</text>
+            <text x="68" y="220">60</text><text x="68" y="119">80</text>
+          </g>
+
+          <!-- axis titles -->
+          <text x="385" y="578" font-family="ui-monospace, Menlo, monospace" font-size="12.5" fill="#8C8779" text-anchor="middle">|Worse| 系数（%）— 缺失该功能的负面影响</text>
+          <text x="24" y="280" font-family="ui-monospace, Menlo, monospace" font-size="12.5" fill="#8C8779" text-anchor="middle" transform="rotate(-90 24 280)">Better 系数（%）</text>
+
+          <!-- quadrant labels -->
+          <g font-family="Songti SC, serif" font-size="17" fill="#8B988A">
+            <text x="98" y="70">魅力型</text>
+            <text x="672" y="70" text-anchor="end">期望型</text>
+            <text x="98" y="502">无差异型</text>
+            <text x="672" y="502" text-anchor="end">必备型</text>
+          </g>
+
+          <!-- points -->
+          <!-- 心音异常自动预警 (62.46,77.31) -->
+          <circle cx="624.3" cy="129.4" r="8.5" fill="#6FB39C" stroke="#FBF8F0" stroke-width="3"/>
+          <text x="610" y="112" font-family="PingFang SC, sans-serif" font-size="14" font-weight="600" fill="#1F4B43" text-anchor="end">心音异常自动预警</text>
+
+          <!-- 历史趋势追踪 (60.78,74.79) -->
+          <circle cx="609.7" cy="142.1" r="8.5" fill="#6FB39C" stroke="#FBF8F0" stroke-width="3"/>
+          <text x="595" y="168" font-family="PingFang SC, sans-serif" font-size="14" font-weight="600" fill="#1F4B43" text-anchor="end">历史趋势追踪</text>
+
+          <!-- 免保定快速采集 (61.32,57.11) -->
+          <circle cx="614.4" cy="231.5" r="8.5" fill="#A2444D" stroke="#FBF8F0" stroke-width="3"/>
+          <text x="614.4" y="262" font-family="PingFang SC, sans-serif" font-size="14" font-weight="600" fill="#7E3039" text-anchor="middle">免保定快速采集</text>
+
+          <!-- 兽医端数据共享 (8.84,69.06) -->
+          <circle cx="157" cy="171.1" r="8.5" fill="#E9A33B" stroke="#FBF8F0" stroke-width="3"/>
+          <text x="173" y="142" font-family="PingFang SC, sans-serif" font-size="14" font-weight="600" fill="#8A6212" text-anchor="middle">兽医端数据共享</text>
+
+          <!-- 远程兽医问诊 (10.14,68.45) -->
+          <circle cx="168.4" cy="174.1" r="8.5" fill="#E9A33B" stroke="#FBF8F0" stroke-width="3"/>
+          <text x="173" y="206" font-family="PingFang SC, sans-serif" font-size="14" font-weight="600" fill="#8A6212" text-anchor="middle">远程兽医问诊</text>
+
+          <!-- 多宠统一管理 (11.80,12.98) -->
+          <circle cx="182.8" cy="454.4" r="8.5" fill="#B6AE9B" stroke="#FBF8F0" stroke-width="3"/>
+          <text x="201" y="460" font-family="PingFang SC, sans-serif" font-size="14" font-weight="600" fill="#6E6A5D" text-anchor="start">多宠统一管理</text>
+        </svg>
+        <figcaption>
+          分界线取两系数的均值：Better = 59.95%，|Worse| = 35.89%。数据来源：本次调查（N = 420）。
+        </figcaption>
+      </figure>
+
+      <div class="kano-legend rv">
+        <div class="kleg">
+          <div class="top"><span class="tag o">期望型</span></div>
+          <div class="names">心音异常自动预警<br>历史趋势追踪</div>
+          <div class="val">Better 77.31 / 74.79<br>Worse −62.46 / −60.78</div>
+        </div>
+        <div class="kleg">
+          <div class="top"><span class="tag a">魅力型</span></div>
+          <div class="names">兽医端数据共享<br>远程兽医问诊</div>
+          <div class="val">Better 69.06 / 68.45<br>Worse −8.84 / −10.14</div>
+        </div>
+        <div class="kleg">
+          <div class="top"><span class="tag m">必备型</span></div>
+          <div class="names">免保定快速采集</div>
+          <div class="val">Better 57.11<br>Worse <b>−61.32</b></div>
+        </div>
+        <div class="kleg">
+          <div class="top"><span class="tag i">无差异型</span></div>
+          <div class="names">多宠统一管理</div>
+          <div class="val">Better 12.98<br>Worse −11.80</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="lede rv" style="margin-top: clamp(30px, 4vw, 46px);">
+      注意<strong>免保定快速采集</strong>：按频次法它落在期望型，但按 Better-Worse 四象限，
+      它更接近必备型——缺失时负面影响很大（Worse −61.32），
+      提供时却不会带来惊喜（Better 低于均值）。<strong>产品含义是：必须做扎实，但不宜当卖点。</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ================= MECHANISM ================= -->
+<section class="band dark">
+  <div class="wrap">
+    <div class="eyebrow rv">04 · 机制</div>
+    <h2 class="rv" style="margin-top: 26px;">愿不愿意买，<br>不由收入决定。</h2>
+    <p class="lede rv" style="margin-top: 24px;">
+      有序 Logistic 回归里，月收入（p = 0.203）与城市等级（p = 0.381）都不显著。
+      真正推动购买意愿的是两件事：<strong>有没有真实感受到痛，以及是否认可它的价值。</strong>
+      这意味着营销预算该投在价值教育，而不是价格战。
+    </p>
+
+    <div class="stats" style="margin-top: clamp(30px, 4vw, 50px);">
+      <div class="stat rv">
+        <div class="n">37.11<small>×</small></div>
+        <p>价值感知每提高一个标准差，购买意愿提升一级及以上的<strong>优势比</strong></p>
+      </div>
+      <div class="stat rv">
+        <div class="n">4.67<small>×</small></div>
+        <p>痛点感知的<strong>优势比</strong>——痛得越具体，越愿意为解决方案付费</p>
+      </div>
+      <div class="stat rv">
+        <div class="n">0.203<small>p</small></div>
+        <p>月收入的<strong>显著性</strong>——不显著，说明这不是一个"有钱才买"的市场</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICE ================= -->
+<section class="band dark">
+  <div class="wrap">
+    <div class="eyebrow rv">05 · 定价</div>
+    <h2 class="rv" style="margin-top: 26px;">他们心里有一条价格走廊。</h2>
+
+    <div class="price-head rv" style="margin-top: 32px;">
+      <div class="price-big">560 – 1,023<small>元</small></div>
+      <p class="lede" style="margin: 0 0 8px; max-width: 40ch;">
+        PSM 四条累积曲线两两相交，得到可接受区间。<br>
+        最优价格点 <span class="mono" style="color:var(--signal)">745 元</span>，
+        无差异价格 <span class="mono" style="color:var(--signal)">795 元</span>。
+      </p>
+    </div>
+
+    <div class="ruler rv" aria-hidden="true">
+      <svg viewBox="0 0 1036 190">
+        <!-- accepted band 560–1023 -->
+        <rect x="243.2" y="66" width="326.2" height="60" fill="rgba(233,163,59,.16)"/>
+        <line x1="243.2" y1="54" x2="243.2" y2="138" stroke="#E9A33B" stroke-width="1.6" stroke-dasharray="5 4"/>
+        <line x1="569.4" y1="54" x2="569.4" y2="138" stroke="#E9A33B" stroke-width="1.6" stroke-dasharray="5 4"/>
+
+        <!-- baseline -->
+        <line x1="60" y1="96" x2="976" y2="96" stroke="rgba(134,191,169,.34)" stroke-width="1.2"/>
+
+        <!-- OPP marker -->
+        <line x1="373.6" y1="34" x2="373.6" y2="96" stroke="#F3C67C" stroke-width="1.8"/>
+        <circle cx="373.6" cy="96" r="5" fill="#F3C67C"/>
+
+        <!-- proposed 799 -->
+        <circle cx="411.6" cy="96" r="3.6" fill="none" stroke="#8FA096" stroke-width="1.4"/>
+        <line x1="411.6" y1="96" x2="411.6" y2="150" stroke="#8FA096" stroke-width="1" stroke-dasharray="2 3"/>
+
+        <!-- ticks -->
+        <g stroke="rgba(134,191,169,.4)" stroke-width="1.2">
+          <line x1="60" y1="88" x2="60" y2="106"/>
+          <line x1="271.4" y1="88" x2="271.4" y2="106"/>
+          <line x1="482.8" y1="88" x2="482.8" y2="106"/>
+          <line x1="694.2" y1="88" x2="694.2" y2="106"/>
+          <line x1="905.5" y1="88" x2="905.5" y2="106"/>
+          <line x1="976" y1="88" x2="976" y2="106"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="13" fill="#8B998F" text-anchor="middle">
+          <text x="60" y="128">300</text>
+          <text x="271.4" y="128">600</text>
+          <text x="482.8" y="128">900</text>
+          <text x="694.2" y="128">1,200</text>
+          <text x="905.5" y="128">1,500</text>
+          <text x="976" y="128">1,600</text>
+        </g>
+
+        <!-- labels -->
+        <g font-family="PingFang SC, sans-serif" font-size="14">
+          <text x="243.2" y="44" text-anchor="middle" fill="#E9A33B" font-weight="600">下限 560</text>
+          <text x="569.4" y="44" text-anchor="middle" fill="#E9A33B" font-weight="600">上限 1,023</text>
+          <text x="373.6" y="26" text-anchor="middle" fill="#F3C67C" font-weight="600">最优价格点 745</text>
+          <text x="411.6" y="172" text-anchor="middle" fill="#9AA79E">建议标准版 799</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="price-notes">
+      <div class="pn rv">
+        <div class="k">Acceptable range</div>
+        <div class="v">560 – 1,023 <em>元</em></div>
+        <p>四条累积曲线交点法测得，非中位数近似</p>
+      </div>
+      <div class="pn rv">
+        <div class="k">Optimal price point</div>
+        <div class="v">745 <em>元</em></div>
+        <p>太便宜曲线与太贵曲线相交，此时认为"太便宜"与"太贵"的人数相等</p>
+      </div>
+      <div class="pn rv">
+        <div class="k">Proposed launch price</div>
+        <div class="v">799 <em>元</em></div>
+        <p>标准版定价，落在区间内、贴近最优点，为渠道留出空间</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SEGMENTS ================= -->
+<section class="band light on-light">
+  <div class="wrap">
+    <div class="eyebrow on-light rv">06 · 人群</div>
+    <h2 class="rv" style="margin-top: 26px;">先找对人，再谈其他。</h2>
+    <p class="lede rv" style="margin-top: 24px;">
+      K-means 按痛点感知、价值感知、价格接受度与购买意愿四个维度分群。
+      五类客群里，购买意愿最高的两类合计 <strong>42.6%</strong>——他们是首发要触达的人。
+    </p>
+
+    <div class="seg-list">
+      <div class="seg-row core rv">
+        <span class="no">01</span><span class="nm">高痛点高意愿型</span>
+        <span class="pc">16.9%</span>
+        <span class="bar"><i style="--w:65.8%"></i><span class="note">痛点 4.69 · 意愿 4.49</span></span>
+      </div>
+      <div class="seg-row core rv">
+        <span class="no">02</span><span class="nm">价值驱动型</span>
+        <span class="pc">25.7%</span>
+        <span class="bar"><i style="--w:100%"></i><span class="note">痛点 4.42 · 意愿 4.15</span></span>
+      </div>
+      <div class="seg-row rv">
+        <span class="no">03</span><span class="nm">观望型</span>
+        <span class="pc">13.1%</span>
+        <span class="bar"><i style="--w:51.0%"></i><span class="note">意愿 2.69</span></span>
+      </div>
+      <div class="seg-row rv">
+        <span class="no">04</span><span class="nm">价格敏感型</span>
+        <span class="pc">24.0%</span>
+        <span class="bar"><i style="--w:93.4%"></i><span class="note">意愿 2.68</span></span>
+      </div>
+      <div class="seg-row rv">
+        <span class="no">05</span><span class="nm">低需求型</span>
+        <span class="pc">20.2%</span>
+        <span class="bar"><i style="--w:78.6%"></i><span class="note">意愿 1.56</span></span>
+      </div>
+    </div>
+
+    <p class="lede rv" style="margin-top: clamp(28px, 3.6vw, 42px);">
+      分群定阶取 k = 5，依据是业务可解释性——五类客群在四个维度上呈现出可区分、可命名、可对应差异化策略的结构。
+      统计判据（肘部法则与轮廓系数）均倾向更少的簇数，这一取舍在报告中已明确说明。
+    </p>
+  </div>
+</section>
+
+<!-- ================= PRODUCT ================= -->
+<section class="band dark">
+  <div class="wrap">
+    <div class="eyebrow rv">07 · 产品</div>
+    <h2 class="rv" style="margin-top: 26px;">把一次听诊，<br>变成一条可以回看的曲线。</h2>
+    <p class="lede rv" style="margin-top: 24px;">
+      四项核心配置全部来自调研结论：期望型功能做扎实，魅力型功能做差异，
+      无差异功能不占硬件成本。
+    </p>
+
+    <div class="prod-grid">
+      <div class="prod-card rv">
+        <div class="n">01 · 必备</div>
+        <h3>免保定快速采集</h3>
+        <p>柔性贴合胸廓的听诊贴片，宠物自然站立或卧姿下完成 30 秒心音采集，规避保定应激与信号干扰。</p>
+      </div>
+      <div class="prod-card rv">
+        <div class="n">02 · 期望</div>
+        <h3>心音异常自动预警</h3>
+        <p>对心率、心律与杂音特征作初步判别，输出"正常／建议就医"提示。不替代诊断，只帮你决定要不要去医院。</p>
+      </div>
+      <div class="prod-card rv">
+        <div class="n">03 · 期望</div>
+        <h3>历史趋势追踪</h3>
+        <p>每次采集存档，生成周／月心率与心音特征趋势曲线。单次听诊是快照，趋势才是判断依据。</p>
+      </div>
+      <div class="prod-card rv">
+        <div class="n">04 · 魅力</div>
+        <h3>兽医端数据共享</h3>
+        <p>就诊时兽医可直接调取家庭采集的原始音频与趋势数据，支持远程复听。这是差异化，也是 B 端入口。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CLOSING ================= -->
+<section class="closing">
+  <div class="wrap">
+    <blockquote class="rv">
+      它不会说哪里不舒服，<br><em>但心音会。</em>
+    </blockquote>
+    <div class="sig rv">宠物智能听诊器市场需求与支付意愿调查研究</div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h5>Project</h5>
+        <p>《"它"不会说，我们替它听——宠物智能听诊器市场需求与支付意愿调查研究》</p>
+        <p style="margin-top:10px; color:#67756F;">正大杯 · 全国大学生市场调查与分析大赛</p>
+      </div>
+      <div>
+        <h5>Method</h5>
+        <ul>
+          <li><span>样本</span>计划 1,440 / 当前 420</li>
+          <li><span>题项</span>42 题 / 7 部分</li>
+          <li><span>方法</span>Kano · PSM · Logit · K-means</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Team</h5>
+        <ul>
+          <li><span>参赛团队</span>XXX</li>
+          <li><span>指导教师</span>XXX</li>
+          <li><span>学校</span>XXX</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="foot-note">
+      <b>数据口径：</b>本页的分析结果（Kano、PSM、回归、聚类）由项目分析脚本对
+      <b>当前已完成的第一阶段 420 份有效样本</b>计算得到。正式调查按 ±3.5% 精度测算，
+      计划发放 1,440 份、目标有效 1,260 份；全量数据回收后，将以同一分析链重跑更新，
+      所有统计量与图表数字随之替换。页面展示的是方法链与分析结论的结构，终稿数字以全量数据为准。
+    </p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
 </html>

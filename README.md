@@ -1,158 +1,64 @@
-# zero-to-tech-4-1（模块 4.1 配套代码）
+# 替它听 · 静态站点
 
-> 这是 **零到全栈 · 模块 4.1：现代前端第一步——模块化** 的配套代码——
-> 网站**模块化改造之前**的起点版本。
-
-跟着这一节课件一步步改下来，你会把它改造成 ES 模块化的版本——这份模块化成果，就是 4.2 那一节的出发点（下一节我们在它基础上配 Vite 工具链）。
-
-## 它当前是什么样
-
-- 两个页面：`index.html`（个人主页）、`text-lab.html`（文字实验室）
-- 顶部 hero 区（品牌 + 导航 + 大标题）、卡片、分数动画——和模块 1.2 展示过的最终成品 UI 一脉相承
-- 8 个 css 文件、3 个 js 文件，沿用模块 3.2 教过的"用 `<link>` 和 `<script src>` 引文件"写法
-- anime.js 通过**传统 `<script>` 标签**（IIFE 版本）从 CDN 拉过来，挂到 `window.anime` 全局
-- 四个 `<script>` 必须按 **anime.js → cards.js → score.js → nav.js** 的顺序加载，错一个就崩
-
-> 这套写法刚开始还能用，但项目一长大就会撞上**两件结构痛**：**顺序坑** + **全局污染**。
-> 课件里会带你亲眼撞上它们，然后一起把项目改造成 ES 模块化的版本。
-
-## 怎么打开
-
-直接在浏览器里双击 `index.html` 即可，无需任何工具。
-
-## 想自己亲手撞一下"顺序坑"？
-
-把 `index.html` 底部前两行 `<script>` 调换：
-
-```html
-<script src="js/cards.js"></script>  <!-- cards 跑的时候 anime 还没加载 -->
-<script src="https://cdn.jsdelivr.net/npm/animejs@4/lib/anime.iife.min.js"></script>
-<script src="js/score.js"></script>
-<script src="js/nav.js"></script>
-```
-
-刷新页面、F12 看控制台——一行刺眼的红字：
+宠物智能听诊器市场调研的项目展示页。**纯静态，无构建步骤、无依赖、零外部请求**，把这三个文件放进任意静态托管即可上线。
 
 ```
-Uncaught ReferenceError: anime is not defined
+web/
+├── index.html     页面结构
+├── style.css      全部样式
+└── script.js      心音波形（Canvas）＋ 播放心音（Web Audio）＋ 滚动淡入
 ```
 
-卡片动画当场报废。这就是"靠 `<script>` 顺序维持依赖"的脆弱——课件里讲的两件结构痛之一。
+## 部署方式（任选其一）
 
-实验做完，记得把两行调回原顺序。
+**Netlify（最快）**
+直接把这个文件夹拖到 https://app.netlify.com/drop ，几秒后拿到网址。
 
-## 自己动手：把它改造成模块化版本
-
-下面这五步，就是课件里带你做的那次改造。你也可以**对照着自己手动改一遍**——代码都给你了，逐个粘进去就行（不用自己写）。
-
-### 第一步：改 `cards.js`，给它模块化
-
-把 `js/cards.js` 的内容**整个替换**成：
-
-```javascript
-import { animate, stagger } from "https://cdn.jsdelivr.net/npm/animejs@4/+esm";
-
-export function initCardsAnim() {
-  animate(".card", {
-    opacity: [0, 1],
-    translateY: [24, 0],
-    delay: stagger(120),
-    duration: 700,
-    ease: "outBack",
-  });
-}
+**Vercel**
+```bash
+npx vercel --prod
 ```
+在 `web/` 目录下执行，框架选 Other，无构建命令，输出目录填 `.`。
 
-- 顶上 `import`：明文声明"我要用 anime.js 里的 `animate` 和 `stagger`"（注意网址末尾的 `+esm`，这是 anime.js 的 **ES 模块版本**）。
-- `export`：把这个函数对外开放，让别的文件能 import 它。
+**GitHub Pages**
+推到仓库后，Settings → Pages → Source 选 `main` 分支 `/web` 目录。
 
-### 第二步：改 `score.js`，给它也模块化（顺手升级动画）
+**任意服务器 / 对象存储**
+把三个文件上传到同一目录即可，相对路径引用，不需要改任何配置。
 
-把 `js/score.js` 的内容**整个替换**成：
-
-```javascript
-import { animate, scrambleText } from "https://cdn.jsdelivr.net/npm/animejs@4/+esm";
-
-export function initScoreAnim() {
-  var btn = document.querySelector(".primary-button");
-  var scoreEl = document.querySelector("[data-score]");
-  if (!btn || !scoreEl) return;
-
-  btn.addEventListener("click", function () {
-    animate(scoreEl, {
-      innerHTML: scrambleText({ chars: "0-9" }),
-      duration: 1500,
-    });
-  });
-}
+**本地预览**
+```bash
+cd web && python3 -m http.server 8000
 ```
+然后访问 http://localhost:8000
 
-- 套路和第一步一样：上面 `import`、下面 `export`。
-- 顺手把原来 `setInterval` 手写的数字滚动，换成了 anime.js 的 `scrambleText` 特效（这个特效只在 ES 模块版本里才有）。
-- 注意 `scrambleText({ chars: "0-9" })` 里的 `chars: "0-9"`——它告诉 scrambleText**滚动时只用数字 0~9**。不加这个参数的话，它默认会用字母、符号一起洗，分数滚动过程中就会闪过一堆字母，不像在"算数字"。
+## 实现说明
 
-### 第三步：改 `nav.js`，给它也模块化
+- **Canvas 心音图**：用阻尼正弦波合成 S1（lub）/ S2（dub）双爆发，模拟真实心音图（PCG）而非通用心电波形。`script.js` 中的 `pcg(t)` 是信号模型。
+- **播放心音**：点按钮触发 Web Audio 实时合成，4 个心动周期，低频振荡 + 带通噪声。无音频文件，因此没有任何外部资源。
+- **滚动淡入**：IntersectionObserver，`prefers-reduced-motion` 下自动关闭。
+- **无 JS 兜底**：`<html>` 上的 `.js` 类由内联脚本添加，脚本失败时内容完整可见。
+- **响应式**：1440 / 1600 / 1920 / 390 均已验证，无横向溢出。
 
-把 `js/nav.js` 的内容**整个替换**成：
+## 字体
 
-```javascript
-export function initNav() {
-  var path = location.pathname.split("/").pop() || "index.html";
-  var links = document.querySelectorAll(".nav-link");
-  for (var i = 0; i < links.length; i++) {
-    var href = links[i].getAttribute("href");
-    if (href === path) links[i].classList.add("active");
-    else links[i].classList.remove("active");
-  }
-}
-```
+使用系统字体，不加载 Web Font：
 
-- 对比一下改造前后：**只有头尾变了**——外层的 `(function () { ... })()` 立即执行包裹，换成了 `export function initNav() { ... }`，中间逻辑一字未改。
-- 模块化只管"怎么对外暴露"，不会逼你改写内部逻辑。
+- 标题：`Songti SC` → `Source Han Serif SC` → `Noto Serif SC` → `STSong`
+- 正文：`PingFang SC` → `Hiragino Sans GB` → `Microsoft YaHei`
+- 数据：`SF Mono` / `Menlo`
 
-### 第四步：新建 `main.js`，作为整个项目的总入口
+macOS 与 Windows 上观感略有差异（宋体 / 苹方 vs 微软雅黑），正式展示前建议在实际使用的设备上过一遍。
 
-在 `js/` 目录下**新建一个文件** `js/main.js`，写入：
+## 内容口径
 
-```javascript
-import { initNav } from "./nav.js";
-import { initCardsAnim } from "./cards.js";
-import { initScoreAnim } from "./score.js";
+页面顶部的 **1,440（计划发放）/ 1,260（目标有效）** 是调查方案口径；**420（当前分析样本）** 是页面中 Kano、PSM、回归、聚类各图表数据的实际来源。页脚已写明这一区分。
 
-initNav();
-initCardsAnim();
-initScoreAnim();
-```
+全量数据回收后，需同步更新的位置：
 
-- 它把前三个文件 `export` 出来的函数分别 `import` 进来，再挨个调用一遍。
-- 说白了，它就是整个页面的"总开关"。
+1. 首屏 `.hero-meta` 中的「当前分析样本」
+2. 第 03 / 04 / 05 / 06 节中的统计量与图表坐标
+3. Kano 四象限 SVG 里 6 个数据点的 `cx` / `cy`（按 `|Worse|` 与 `Better` 重新换算）
+4. 页脚数据口径说明
 
-### 第五步：改两个 HTML，把四行 `<script>` 收成一行
-
-打开 `index.html`，把底部那四行 `<script>`：
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/animejs@4/lib/anime.iife.min.js"></script>
-<script src="js/cards.js"></script>
-<script src="js/score.js"></script>
-<script src="js/nav.js"></script>
-```
-
-**整个删掉，换成一行**：
-
-```html
-<script type="module" src="js/main.js"></script>
-```
-
-`text-lab.html` 那边**也有同样的四行**，照样删掉、换成这一行。
-
-> 改完之后，**别再双击 `index.html` 打开了**——ES 模块必须通过"服务器"提供才能加载，浏览器不允许 `file://` 直接打开（会白屏 + CORS 报错）。
-> 把项目部署到模块 3.5 那台 Nginx 服务器上（push → 服务器 pull → 指向它），再用公网 IP 访问，就能看到改造后的效果了。
-
-改完这五步，你就拿到了 4.1 的模块化成果——也就是 4.2 那一节的出发点。
-
-## 这一节最该带走的一句话
-
-> 项目长大了，"全堆在一起 + 手排 `<script>` 顺序 + 全靠 window 全局"的旧组织方式撑不住了。
-> **模块化**把每个文件的依赖写进代码里、给每个文件一份独立作用域——
-> 这就是工程化迈出的第一步。
+Kano 图的坐标换算规则见 `index.html` 中该 SVG 的注释（viewBox 720×600，x 轴 0–70 映射到 80–690，y 轴 0–95 映射到 520–40）。
